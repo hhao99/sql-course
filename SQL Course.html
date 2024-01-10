@@ -127,7 +127,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="prepare-the-data" class="level1">
 <h1>Prepare the data</h1>
 <p>First we need import the necessary python package</p>
-<div id="951e1385-c198-499c-b1fe-c9569836a559" class="cell" data-execution_count="14">
+<div id="951e1385-c198-499c-b1fe-c9569836a559" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -138,15 +138,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="load-the-sales-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-the-sales-data">Load the sales data</h2>
-<div id="19f0c8c8-0c13-40f7-90d0-fc04818987a2" class="cell" data-execution_count="16">
+<div id="19f0c8c8-0c13-40f7-90d0-fc04818987a2" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> pd.read_csv(<span class="st">'./orders.csv'</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.read_csv(<span class="st">'./details.csv'</span>)</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> pd.read_csv(<span class="st">'./data/orders.csv'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.read_csv(<span class="st">'./data/details.csv'</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>sales_df <span class="op">=</span> pd.merge(df1,df2,on<span class="op">=</span><span class="st">'Order ID'</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>sales_df.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 
 
@@ -221,13 +221,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="do-some-data-type-tranformation">Do some data type tranformation</h2>
 <section id="transform-the-column-into-the-table-compatible-format" class="level3">
 <h3 class="anchored" data-anchor-id="transform-the-column-into-the-table-compatible-format">Transform the column into the table compatible format</h3>
-<div id="df87afd8-af1d-4797-b343-4bc4e6da6571" class="cell" data-execution_count="21">
+<div id="df87afd8-af1d-4797-b343-4bc4e6da6571" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sales_df.columns <span class="op">=</span> df.columns.<span class="bu">map</span>(<span class="kw">lambda</span> c: <span class="st">'_'</span>.join(c.lower().split(<span class="st">' '</span>)))</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sales_df.columns <span class="op">=</span> sales_df.columns.<span class="bu">map</span>(<span class="kw">lambda</span> c: <span class="st">'_'</span>.join(c.lower().split(<span class="st">' '</span>)))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sales_df.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>Index(['order_id', 'order_date', 'customername', 'state', 'city', 'amount',
        'profit', 'quantity', 'category', 'sub-category', 'paymentmode'],
       dtype='object')</code></pre>
@@ -236,18 +236,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="convert-the-order-date-the-pandas-datetime-data-type" class="level3">
 <h3 class="anchored" data-anchor-id="convert-the-order-date-the-pandas-datetime-data-type">Convert the order date the pandas datetime data type</h3>
-<div id="75bfd348-da1f-493a-b911-c8d8a65cfefc" class="cell" data-execution_count="23">
+<div id="75bfd348-da1f-493a-b911-c8d8a65cfefc" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sales_df[<span class="st">'order_date'</span>] <span class="op">=</span> pd.to_datetime(sales_df[<span class="st">'order_date'</span>],<span class="bu">format</span><span class="op">=</span><span class="st">'</span><span class="sc">%d</span><span class="st">-%m-%Y'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="00638e91-b569-4447-b80c-7b58d00898d4" class="cell" data-execution_count="24">
+<div id="00638e91-b569-4447-b80c-7b58d00898d4" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sales_df.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="24">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
 
@@ -321,12 +321,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="query-the-data-with-the-duckdb-sql-capability" class="level2">
 <h2 class="anchored" data-anchor-id="query-the-data-with-the-duckdb-sql-capability">Query the data with the duckdb sql capability</h2>
-<div id="a4262810-b873-4256-a427-ff806fcbeef1" class="cell" data-execution_count="26">
+<div id="a4262810-b873-4256-a427-ff806fcbeef1" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select * from sales_df limit 3'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="26">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>┌──────────┬─────────────────────┬──────────────┬───┬──────────┬─────────────┬──────────────┬─────────────┐
 │ order_id │     order_date      │ customername │ … │ quantity │  category   │ sub-category │ paymentmode │
 │ varchar  │    timestamp_ns     │   varchar    │   │  int64   │   varchar   │   varchar    │   varchar   │
@@ -377,12 +377,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> order_date, customername, <span class="kw">category</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> sales_df</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="75fb66f2-7b81-4943-8fbc-2ba456d40f7f" class="cell" data-execution_count="27">
+<div id="75fb66f2-7b81-4943-8fbc-2ba456d40f7f" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select order_date, customername, category from sales_df limit 5'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="27">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>┌─────────────────────┬──────────────┬─────────────┐
 │     order_date      │ customername │  category   │
 │    timestamp_ns     │   varchar    │   varchar   │
@@ -395,6 +395,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 └─────────────────────┴──────────────┴─────────────┘</code></pre>
 </div>
 </div>
+</section>
+<section id="aliasing-results" class="level3">
+<h3 class="anchored" data-anchor-id="aliasing-results">Aliasing Results</h3>
+<p>When we return the result from the sql, the default table filed names was not readable by the business users. For example, order_date was the compliant name for the database, but confused by the users, what about the “Order Date”, and like customername to the ’Customer Name”?</p>
+<p>In the SQL, it is possible to do that right from the SELECT clause with help of the AS keyword. AS will let you temportarily rename or alias these fields:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    order_date <span class="kw">as</span> <span class="st">'Order Date'</span>, </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    customername <span class="kw">as</span> <span class="st">'Customer Name'</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> sales_df</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">limit</span> <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 </section>
