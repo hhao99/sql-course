@@ -127,7 +127,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="prepare-the-data" class="level1">
 <h1>Prepare the data</h1>
 <p>First we need import the necessary python package</p>
-<div id="5fa975b7" class="cell" data-execution_count="1">
+<div id="4913630c" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -138,7 +138,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="load-the-sales-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-the-sales-data">Load the sales data</h2>
-<div id="ff63ac7f" class="cell" data-execution_count="2">
+<div id="b44aa8e4" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> pd.read_csv(<span class="st">'./data/orders.csv'</span>)</span>
@@ -146,7 +146,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> pd.merge(df1,df2,on<span class="op">=</span><span class="st">'Order ID'</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>sales.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="16">
 <div>
 
 
@@ -221,13 +221,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="do-some-data-type-tranformation">Do some data type tranformation</h2>
 <section id="transform-the-column-into-the-table-compatible-format" class="level3">
 <h3 class="anchored" data-anchor-id="transform-the-column-into-the-table-compatible-format">Transform the column into the table compatible format</h3>
-<div id="4494800e" class="cell" data-execution_count="3">
+<div id="5eba73fa" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sales.columns <span class="op">=</span> sales.columns.<span class="bu">map</span>(<span class="kw">lambda</span> c: <span class="st">'_'</span>.join(c.lower().split(<span class="st">' '</span>)))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sales.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="17">
 <pre><code>Index(['order_id', 'order_date', 'customername', 'state', 'city', 'amount',
        'profit', 'quantity', 'category', 'sub-category', 'paymentmode'],
       dtype='object')</code></pre>
@@ -236,18 +236,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="convert-the-order-date-the-pandas-datetime-data-type" class="level3">
 <h3 class="anchored" data-anchor-id="convert-the-order-date-the-pandas-datetime-data-type">Convert the order date the pandas datetime data type</h3>
-<div id="3ddc0b81" class="cell" data-execution_count="4">
+<div id="3dec66bb" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sales[<span class="st">'order_date'</span>] <span class="op">=</span> pd.to_datetime(sales[<span class="st">'order_date'</span>],<span class="bu">format</span><span class="op">=</span><span class="st">'</span><span class="sc">%d</span><span class="st">-%m-%Y'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="87ee5110" class="cell" data-execution_count="5">
+<div id="4e673fde" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sales.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="19">
 <div>
 
 
@@ -321,12 +321,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="query-the-data-with-the-duckdb-sql-capability" class="level2">
 <h2 class="anchored" data-anchor-id="query-the-data-with-the-duckdb-sql-capability">Query the data with the duckdb sql capability</h2>
-<div id="9636a0ff" class="cell" data-execution_count="6">
+<div id="8d868ac2" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select * from sales limit 3'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>┌──────────┬─────────────────────┬──────────────┬───┬──────────┬─────────────┬──────────────┬─────────────┐
 │ order_id │     order_date      │ customername │ … │ quantity │  category   │ sub-category │ paymentmode │
 │ varchar  │    timestamp_ns     │   varchar    │   │  int64   │   varchar   │   varchar    │   varchar   │
@@ -382,12 +382,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> order_date, customername, <span class="kw">category</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> sales</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="6ad5c434" class="cell" data-execution_count="7">
+<div id="1f92586b" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select order_date, customername, category from sales limit 5'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>┌─────────────────────┬──────────────┬─────────────┐
 │     order_date      │ customername │  category   │
 │    timestamp_ns     │   varchar    │   varchar   │
@@ -425,12 +425,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>That is, we can use the arithmetic operations in the SQL statements, and also we can SQL functions or user defined functions in the sQL statements.</p>
 <p>For example, we can only return the two decimal point of the item price by using the round functions:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> order_id, <span class="fu">round</span>(amount<span class="op">/</span>quantity, <span class="dv">2</span>) <span class="kw">as</span> item_price <span class="kw">from</span> sales</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="5586efa6" class="cell" data-execution_count="8">
+<div id="a8733618" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select order_id, round(amount/quantity, 2) as item_price from sales limit 3'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="22">
 <pre><code>┌──────────┬────────────┐
 │ order_id │ item_price │
 │ varchar  │   double   │
@@ -450,10 +450,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">LIMIT</span> <span class="dv">5</span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="st">'</span><span class="ch">''</span></span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="st">::: {#b20cc3f5 .cell execution_count=9}</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="st">::: {#e7566ed3 .cell execution_count=9}</span></span>
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="st">``` {.python .cell-code}</span></span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="st">sql('</span>select order_id, amount, <span class="fu">round</span>(amount<span class="op">*</span><span class="fl">0.05</span>,<span class="dv">2</span>) <span class="kw">as</span> GST, <span class="fu">round</span>(amount<span class="op">*</span><span class="fl">0.07</span>,<span class="dv">2</span>) <span class="kw">as</span> PST <span class="kw">from</span> sales <span class="kw">limit</span> <span class="dv">5</span><span class="st">')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="23">
 <pre><code>┌──────────┬────────┬───────────────┬───────────────┐
 │ order_id │ amount │      GST      │      PST      │
 │ varchar  │ int64  │ decimal(22,2) │ decimal(22,2) │
@@ -482,12 +482,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> sales</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> amount <span class="op">&gt;</span> <span class="dv">1000</span></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="5ac22989" class="cell" data-execution_count="10">
+<div id="12cb3b99" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select order_id, amount from sales where amount &gt; 1000 limit 5'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="24">
 <pre><code>┌──────────┬────────┐
 │ order_id │ amount │
 │ varchar  │ int64  │
@@ -529,12 +529,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>Most compare operator to check the numberic values, like is 10 less than 8, actually is False. = and &lt;&gt; can also be used to check the value of text values. For Example, we can filter the result with category = ‘Clothing’, any record that category equal to ‘Clothing’ will be returned.</p>
-<div id="272ac802" class="cell" data-execution_count="11">
+<div id="c509237c" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select month(order_date),count(*) from sales group by month(order_date)'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="25">
 <pre><code>┌───────────────────┬──────────────┐
 │ month(order_date) │ count_star() │
 │       int64       │    int64     │
@@ -556,12 +556,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 └──────────────────────────────────┘</code></pre>
 </div>
 </div>
-<div id="cf1ecc45" class="cell" data-execution_count="12">
+<div id="5305891c" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select sum(profit)/count(order_id) from sales'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="26">
 <pre><code>┌─────────────────────────────────┐
 │ (sum(profit) / count(order_id)) │
 │             double              │
@@ -570,12 +570,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 └─────────────────────────────────┘</code></pre>
 </div>
 </div>
-<div id="37427443" class="cell" data-execution_count="13">
+<div id="08d5caf7" class="cell" data-execution_count="13">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select avg(profit) from sales'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="27">
 <pre><code>┌─────────────┐
 │ avg(profit) │
 │   double    │
@@ -584,12 +584,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 └─────────────┘</code></pre>
 </div>
 </div>
-<div id="5b6cdca0" class="cell" data-execution_count="14">
+<div id="261a434f" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select category, sum(amount) as total_amount  from sales group by category order by total_amount '</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="28">
 <pre><code>┌─────────────┬──────────────┐
 │  category   │ total_amount │
 │   varchar   │    int128    │

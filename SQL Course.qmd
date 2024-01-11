@@ -6,7 +6,9 @@ format:
   html:
     code-fold: true
   pdf:
-    code-folde: true
+    toc: true
+    number-section: true
+    code-folde: false
 jupyter: python3
 ---
 
