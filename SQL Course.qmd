@@ -39,10 +39,10 @@ sql = lambda s: duckdb.sql(s)
 ## Load the sales data
 
 ```{python}
-df1 = pd.read_csv('./orders.csv')
-df2 = pd.read_csv('./details.csv')
-sales_df = pd.merge(df1,df2,on='Order ID')
-sales_df.head(3)
+df1 = pd.read_csv('./data/orders.csv')
+df2 = pd.read_csv('./data/details.csv')
+sales = pd.merge(df1,df2,on='Order ID')
+sales.head(3)
 ```
 
 ## Do some data type tranformation
@@ -50,34 +50,35 @@ sales_df.head(3)
 ### Transform the column into the table compatible format
 
 ```{python}
-sales_df.columns = df.columns.map(lambda c: '_'.join(c.lower().split(' ')))
-sales_df.columns
+sales.columns = sales.columns.map(lambda c: '_'.join(c.lower().split(' ')))
+sales.columns
 ```
 
 ### Convert the order date the pandas datetime data type
 
 ```{python}
-sales_df['order_date'] = pd.to_datetime(sales_df['order_date'],format='%d-%m-%Y')
+sales['order_date'] = pd.to_datetime(sales['order_date'],format='%d-%m-%Y')
 ```
 
 ```{python}
-sales_df.head(3)
+sales.head(3)
 ```
 
 ## Query the data with the duckdb sql capability
 
 ```{python}
-sql('select * from sales_df limit 3')
+sql('select * from sales limit 3')
 ```
 
 ## First SQL we try to say hello to database
-Now the duckdb database has only one table sales_df, which contains information about the orders from the superstore stores, our first line of code is to retrieve the first 3 rows of this tables:
+Now the duckdb database has only one table sales, which contains information about the orders from the superstore stores, our first line of code is to retrieve the first 3 rows of this tables:
 ```sql
 SELECT *
-    FROM sales_df
+    FROM sales
     LIMIT 3;
 ```
 Let's explain this code a little further:
+
  - \* is a special character meaning 'all the column of the table'. We will learn more about the SELECtclause later, but for now we can read this line as 'Select all columns'
  - FROM clause tell database which table that we want to retrieve the data. We will learn more about how to identify the database tables and how to manage them.
  - LIMIT 3 tell the database the result return from limit to 3 records. A table might have millions rows of data, attempting to return all the data could get messy.
@@ -97,7 +98,7 @@ Like a sheet in Excel, a database table consists of rows and columns which are o
 ### First Example: Select all columns from sales table
 ```sql
 SELECT * 
-    FROM sales_df 
+    FROM sales 
     LIMIT 3;
 ```
 As we introduce the say hello to the database tables, we can select all the columns from the database tables;
@@ -106,12 +107,12 @@ But what about reducing the number of fields shown? As we learned earlier, we ca
 
 ```sql
 SELECT order_date, customername, category 
-    FROM sales_df
+    FROM sales
     LIMIT 5;
 ```
 
 ```{python}
-sql('select order_date, customername, category from sales_df limit 5')
+sql('select order_date, customername, category from sales limit 5')
 ```
 
 ## Exploring the tables and columns
@@ -121,6 +122,7 @@ For consistency and effieciency, SQL Database only allow one data type per colum
 Formally, we call these types of data as data type or storage class, when you design the database, you must be carfully select the data type, different data type has different storage requirements and support different computation purpose, for example, numberic data type can be compared and can be add and subtract and string data type can repsent the person name and address, and you need some information of the data type and their specific requirements on the database designation, this course focus on the sql query, please google some more resource on the database design.
 
 Generally, Database all support four type of data, numberic, text, boolean and blob. 
+
 - for the text, there are char, varchar, text data type.
 - for the numberic, there are int, float, double data type.
 - for the boolean, only the bool
@@ -133,18 +135,18 @@ A typical task for data analysts is to derive new columns from existing columns 
 
 For example, the sales db, there are Amount and quanity columns, but no item price columns, if we want to know the item price of the each order, how to write the sql?
 ```sql
-select order_id, amount/quanity as item_price from sales_df
+select order_id, amount/quanity as item_price from sales
 limit 3
 ```
 That is, we can use the arithmetic operations in the SQL statements, and also we can SQL functions or user defined functions in the sQL statements.
 
 For example, we can only return the two decimal point of the item price by using the round functions:
 ```sql
-select order_id, round(amount/quantity, 2) as item_price from sales_df
+select order_id, round(amount/quantity, 2) as item_price from sales
 ```
 
 ```{python}
-sql('select order_id, round(amount/quantity, 2) as item_price from sales_df limit 3')
+sql('select order_id, round(amount/quantity, 2) as item_price from sales limit 3')
 ```
 
 And if your manager want to know the tax of the sales, we can easily calculate the tax with the arithmetic operations
@@ -153,18 +155,20 @@ SELECT
     order_id, 
     round(amount * 0.07,2) as PST , 
     round(amount*0.05,2) as GST 
-    FROM sales_df 
+    FROM sales 
     LIMIT 5
 '''
 
 ```{python}
-sql('select order_id, amount, round(amount*0.05,2) as GST, round(amount*0.07,2) as PST from sales_df limit 5')
+sql('select order_id, amount, round(amount*0.05,2) as GST, round(amount*0.07,2) as PST from sales limit 5')
 ```
 
 ## Basic Comparison operations
 From the business perspective, we want to knwo which store has the positive profit and how about this month sales increase, and the profit margin.
 Let's start with the simple > and < to compare whether one value is greater or less than another.
+
 It's time to introduce the WHERE clause to filter the results we want from the SQL statements.
+
 1. SELECT: Specify what fields we want from the table
 2. FROM: Specify what table(or tables) we want from
 3. WHERE: Specify the criteria that records in those fields should meet, also can be defined as a filter
@@ -174,18 +178,19 @@ It's time to introduce the WHERE clause to filter the results we want from the S
 Let's see the WHERE clause in action. For Example, we want to see how about the order amount greater than $1000 by writing the following statement with WHERE:
 ```sql
 SELECT order_id, amount 
-FROM sales_df
+FROM sales
 WHERE amount > 1000
 LIMIT 5;
 ```
 
 ```{python}
-sql('select order_id, amount from sales_df where amount > 1000 limit 5')
+sql('select order_id, amount from sales where amount > 1000 limit 5')
 ```
 
 The Where clause is essentially used as a filter and return the records where the operators evaluate to TRUE
 
 Compare operator not only the > and <, Here is the list of compare operators:
+
 |Operator | Description |
 |------------|---------------|
 |= | Equal to |
@@ -197,19 +202,19 @@ Most compare operator to check the numberic values, like is 10 less than 8, actu
 = and <> can also be used to check the value of text values. For Example, we can filter the result with category = 'Clothing', any record that category equal to 'Clothing' will be returned.
 
 ```{python}
-sql('select month(order_date),count(*) from sales_df group by month(order_date)')
+sql('select month(order_date),count(*) from sales group by month(order_date)')
 ```
 
 ```{python}
-sql('select sum(profit)/count(order_id) from sales_df')
+sql('select sum(profit)/count(order_id) from sales')
 ```
 
 ```{python}
-sql('select avg(profit) from sales_df')
+sql('select avg(profit) from sales')
 ```
 
 ```{python}
-sql('select category, sum(amount) as total_amount  from sales_df group by category order by total_amount ')
+sql('select category, sum(amount) as total_amount  from sales group by category order by total_amount ')
 ```
 
 
