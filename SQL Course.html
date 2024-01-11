@@ -439,20 +439,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">LIMIT</span> <span class="dv">5</span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="st">'</span><span class="ch">''</span></span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="st">::: {#ff807ad8-57fa-40bb-9a1f-b2f10c4e7c57 .cell execution_count=34}</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="st">::: {#ff807ad8-57fa-40bb-9a1f-b2f10c4e7c57 .cell execution_count=36}</span></span>
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="st">``` {.python .cell-code}</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="st">sql('</span>select order_id, <span class="fu">round</span>(amount<span class="op">*</span><span class="fl">0.05</span>,<span class="dv">2</span>) <span class="kw">as</span> GST, <span class="fu">round</span>(amount<span class="op">*</span><span class="fl">0.07</span>,<span class="dv">2</span>) <span class="kw">as</span> PST <span class="kw">from</span> sales_df <span class="kw">limit</span> <span class="dv">5</span><span class="st">')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="34">
-<pre><code>┌──────────┬───────────────┬───────────────┐
-│ order_id │      GST      │      PST      │
-│ varchar  │ decimal(22,2) │ decimal(22,2) │
-├──────────┼───────────────┼───────────────┤
-│ B-26055  │        286.45 │        401.03 │
-│ B-26055  │         33.55 │         46.97 │
-│ B-26055  │         22.15 │         31.01 │
-│ B-26055  │          2.85 │          3.99 │
-│ B-26055  │         11.35 │         15.89 │
-└──────────┴───────────────┴───────────────┘</code></pre>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="st">sql('</span>select order_id, amount, <span class="fu">round</span>(amount<span class="op">*</span><span class="fl">0.05</span>,<span class="dv">2</span>) <span class="kw">as</span> GST, <span class="fu">round</span>(amount<span class="op">*</span><span class="fl">0.07</span>,<span class="dv">2</span>) <span class="kw">as</span> PST <span class="kw">from</span> sales_df <span class="kw">limit</span> <span class="dv">5</span><span class="st">')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="36">
+<pre><code>┌──────────┬────────┬───────────────┬───────────────┐
+│ order_id │ amount │      GST      │      PST      │
+│ varchar  │ int64  │ decimal(22,2) │ decimal(22,2) │
+├──────────┼────────┼───────────────┼───────────────┤
+│ B-26055  │   5729 │        286.45 │        401.03 │
+│ B-26055  │    671 │         33.55 │         46.97 │
+│ B-26055  │    443 │         22.15 │         31.01 │
+│ B-26055  │     57 │          2.85 │          3.99 │
+│ B-26055  │    227 │         11.35 │         15.89 │
+└──────────┴────────┴───────────────┴───────────────┘</code></pre>
 </div>
 <p>:::</p>
 <section id="basic-comparison-operations" class="level2">
@@ -484,6 +484,77 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The Where clause is essentially used as a filter and return the records where the operators evaluate to TRUE</p>
 <p>Compare operator not only the &gt; and &lt;, Here is the list of compare operators: |Operator | Description | |————|—————| |= | Equal to | |&gt;= | Greater than or equal to | |&lt;= | Less than or equal to | |&lt;&gt; | Not equal to |</p>
 <p>Most compare operator to check the numberic values, like is 10 less than 8, actually is False. = and &lt;&gt; can also be used to check the value of text values. For Example, we can filter the result with category = ‘Clothing’, any record that category equal to ‘Clothing’ will be returned.</p>
+<div id="6ca988a1-d5cb-4dac-b175-dc4bd8f7c404" class="cell" data-execution_count="39">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select month(order_date),count(*) from sales_df group by month(order_date)'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="39">
+<pre><code>┌───────────────────┬──────────────┐
+│ month(order_date) │ count_star() │
+│       int64       │    int64     │
+├───────────────────┼──────────────┤
+│                 1 │          192 │
+│                 2 │          140 │
+│                 3 │          205 │
+│                 4 │          101 │
+│                 5 │          118 │
+│                 6 │          101 │
+│                 7 │           64 │
+│                 8 │          120 │
+│                 9 │           83 │
+│                10 │          106 │
+│                11 │          159 │
+│                12 │          111 │
+├───────────────────┴──────────────┤
+│ 12 rows                2 columns │
+└──────────────────────────────────┘</code></pre>
+</div>
+</div>
+<div id="f8efaa07-3b63-4524-99a0-2c99064578ae" class="cell" data-execution_count="41">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select sum(profit)/count(order_id) from sales_df'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="41">
+<pre><code>┌─────────────────────────────────┐
+│ (sum(profit) / count(order_id)) │
+│             double              │
+├─────────────────────────────────┤
+│                          24.642 │
+└─────────────────────────────────┘</code></pre>
+</div>
+</div>
+<div id="43270314-ee24-425b-8cbf-12c9fbd13ec4" class="cell" data-execution_count="42">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select avg(profit) from sales_df'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="42">
+<pre><code>┌─────────────┐
+│ avg(profit) │
+│   double    │
+├─────────────┤
+│      24.642 │
+└─────────────┘</code></pre>
+</div>
+</div>
+<div id="9573cf7f-27d7-4a16-839f-e9813f89f472" class="cell" data-execution_count="45">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select category, sum(amount) as total_amount  from sales_df group by category order by total_amount '</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="45">
+<pre><code>┌─────────────┬──────────────┐
+│  category   │ total_amount │
+│   varchar   │    int128    │
+├─────────────┼──────────────┤
+│ Furniture   │       127181 │
+│ Clothing    │       144323 │
+│ Electronics │       166267 │
+└─────────────┴──────────────┘</code></pre>
+</div>
+</div>
 </section>
 </section>
 
