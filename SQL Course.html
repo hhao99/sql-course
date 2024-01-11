@@ -127,7 +127,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="prepare-the-data" class="level1">
 <h1>Prepare the data</h1>
 <p>First we need import the necessary python package</p>
-<div id="951e1385-c198-499c-b1fe-c9569836a559" class="cell" data-execution_count="2">
+<div id="951e1385-c198-499c-b1fe-c9569836a559" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -138,15 +138,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="load-the-sales-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-the-sales-data">Load the sales data</h2>
-<div id="19f0c8c8-0c13-40f7-90d0-fc04818987a2" class="cell" data-execution_count="5">
+<div id="19f0c8c8-0c13-40f7-90d0-fc04818987a2" class="cell" data-execution_count="16">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> pd.read_csv(<span class="st">'./data/orders.csv'</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.read_csv(<span class="st">'./data/details.csv'</span>)</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> pd.read_csv(<span class="st">'./orders.csv'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.read_csv(<span class="st">'./details.csv'</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>sales_df <span class="op">=</span> pd.merge(df1,df2,on<span class="op">=</span><span class="st">'Order ID'</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>sales_df.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="16">
 <div>
 
 
@@ -221,13 +221,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="do-some-data-type-tranformation">Do some data type tranformation</h2>
 <section id="transform-the-column-into-the-table-compatible-format" class="level3">
 <h3 class="anchored" data-anchor-id="transform-the-column-into-the-table-compatible-format">Transform the column into the table compatible format</h3>
-<div id="df87afd8-af1d-4797-b343-4bc4e6da6571" class="cell" data-execution_count="6">
+<div id="df87afd8-af1d-4797-b343-4bc4e6da6571" class="cell" data-execution_count="21">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sales_df.columns <span class="op">=</span> sales_df.columns.<span class="bu">map</span>(<span class="kw">lambda</span> c: <span class="st">'_'</span>.join(c.lower().split(<span class="st">' '</span>)))</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sales_df.columns <span class="op">=</span> df.columns.<span class="bu">map</span>(<span class="kw">lambda</span> c: <span class="st">'_'</span>.join(c.lower().split(<span class="st">' '</span>)))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sales_df.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="21">
 <pre><code>Index(['order_id', 'order_date', 'customername', 'state', 'city', 'amount',
        'profit', 'quantity', 'category', 'sub-category', 'paymentmode'],
       dtype='object')</code></pre>
@@ -236,18 +236,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="convert-the-order-date-the-pandas-datetime-data-type" class="level3">
 <h3 class="anchored" data-anchor-id="convert-the-order-date-the-pandas-datetime-data-type">Convert the order date the pandas datetime data type</h3>
-<div id="75bfd348-da1f-493a-b911-c8d8a65cfefc" class="cell" data-execution_count="7">
+<div id="75bfd348-da1f-493a-b911-c8d8a65cfefc" class="cell" data-execution_count="23">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sales_df[<span class="st">'order_date'</span>] <span class="op">=</span> pd.to_datetime(sales_df[<span class="st">'order_date'</span>],<span class="bu">format</span><span class="op">=</span><span class="st">'</span><span class="sc">%d</span><span class="st">-%m-%Y'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="00638e91-b569-4447-b80c-7b58d00898d4" class="cell" data-execution_count="8">
+<div id="00638e91-b569-4447-b80c-7b58d00898d4" class="cell" data-execution_count="24">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sales_df.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="24">
 <div>
 
 
@@ -321,12 +321,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="query-the-data-with-the-duckdb-sql-capability" class="level2">
 <h2 class="anchored" data-anchor-id="query-the-data-with-the-duckdb-sql-capability">Query the data with the duckdb sql capability</h2>
-<div id="a4262810-b873-4256-a427-ff806fcbeef1" class="cell" data-execution_count="9">
+<div id="a4262810-b873-4256-a427-ff806fcbeef1" class="cell" data-execution_count="26">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select * from sales_df limit 3'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="26">
 <pre><code>┌──────────┬─────────────────────┬──────────────┬───┬──────────┬─────────────┬──────────────┬─────────────┐
 │ order_id │     order_date      │ customername │ … │ quantity │  category   │ sub-category │ paymentmode │
 │ varchar  │    timestamp_ns     │   varchar    │   │  int64   │   varchar   │   varchar    │   varchar   │
@@ -377,12 +377,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> order_date, customername, <span class="kw">category</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> sales_df</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="75fb66f2-7b81-4943-8fbc-2ba456d40f7f" class="cell" data-execution_count="10">
+<div id="75fb66f2-7b81-4943-8fbc-2ba456d40f7f" class="cell" data-execution_count="27">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select order_date, customername, category from sales_df limit 5'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="27">
 <pre><code>┌─────────────────────┬──────────────┬─────────────┐
 │     order_date      │ customername │  category   │
 │    timestamp_ns     │   varchar    │   varchar   │
@@ -396,16 +396,94 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="aliasing-results" class="level3">
-<h3 class="anchored" data-anchor-id="aliasing-results">Aliasing Results</h3>
-<p>When we return the result from the sql, the default table filed names was not readable by the business users. For example, order_date was the compliant name for the database, but confused by the users, what about the “Order Date”, and like customername to the ’Customer Name”?</p>
-<p>In the SQL, it is possible to do that right from the SELECT clause with help of the AS keyword. AS will let you temportarily rename or alias these fields:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    order_date <span class="kw">as</span> <span class="st">'Order Date'</span>, </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    customername <span class="kw">as</span> <span class="st">'Customer Name'</span> </span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> sales_df</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">limit</span> <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+<section id="exploring-the-tables-and-columns" class="level2">
+<h2 class="anchored" data-anchor-id="exploring-the-tables-and-columns">Exploring the tables and columns</h2>
+<p>For consistency and effieciency, SQL Database only allow one data type per column. That means integer columns can only store interger data and text columns can only store string data and so on.</p>
+<p>Formally, we call these types of data as data type or storage class, when you design the database, you must be carfully select the data type, different data type has different storage requirements and support different computation purpose, for example, numberic data type can be compared and can be add and subtract and string data type can repsent the person name and address, and you need some information of the data type and their specific requirements on the database designation, this course focus on the sql query, please google some more resource on the database design.</p>
+<p>Generally, Database all support four type of data, numberic, text, boolean and blob. - for the text, there are char, varchar, text data type. - for the numberic, there are int, float, double data type. - for the boolean, only the bool - for the blob, there are binary blob and text blob data type.</p>
+<p>For the specific database, we can use the database specific sql command to retrieve the table definition info.</p>
+</section>
+</section>
+<section id="operation-on-the-numberic-columns" class="level1">
+<h1>Operation on the numberic columns</h1>
+<p>A typical task for data analysts is to derive new columns from existing columns by using arithmetic operations.</p>
+<p>For example, the sales db, there are Amount and quanity columns, but no item price columns, if we want to know the item price of the each order, how to write the sql?</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> order_id, amount<span class="op">/</span>quanity <span class="kw">as</span> item_price <span class="kw">from</span> sales_df</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">limit</span> <span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That is, we can use the arithmetic operations in the SQL statements, and also we can SQL functions or user defined functions in the sQL statements.</p>
+<p>For example, we can only return the two decimal point of the item price by using the round functions:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> order_id, <span class="fu">round</span>(amount<span class="op">/</span>quantity, <span class="dv">2</span>) <span class="kw">as</span> item_price <span class="kw">from</span> sales_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="5c747417-3ad1-43b7-921f-a28d4c6551ad" class="cell" data-execution_count="32">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select order_id, round(amount/quantity, 2) as item_price from sales_df limit 3'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<pre><code>┌──────────┬────────────┐
+│ order_id │ item_price │
+│ varchar  │   double   │
+├──────────┼────────────┤
+│ B-26055  │     409.21 │
+│ B-26055  │      74.56 │
+│ B-26055  │      443.0 │
+└──────────┴────────────┘</code></pre>
+</div>
+</div>
+<p>And if your manager want to know the tax of the sales, we can easily calculate the tax with the arithmetic operations</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    order_id, </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">round</span>(amount <span class="op">*</span> <span class="fl">0.07</span>,<span class="dv">2</span>) <span class="kw">as</span> PST , </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">round</span>(amount<span class="op">*</span><span class="fl">0.05</span>,<span class="dv">2</span>) <span class="kw">as</span> GST </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> sales_df </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">LIMIT</span> <span class="dv">5</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="st">'</span><span class="ch">''</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="st">::: {#ff807ad8-57fa-40bb-9a1f-b2f10c4e7c57 .cell execution_count=34}</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="st">``` {.python .cell-code}</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="st">sql('</span>select order_id, <span class="fu">round</span>(amount<span class="op">*</span><span class="fl">0.05</span>,<span class="dv">2</span>) <span class="kw">as</span> GST, <span class="fu">round</span>(amount<span class="op">*</span><span class="fl">0.07</span>,<span class="dv">2</span>) <span class="kw">as</span> PST <span class="kw">from</span> sales_df <span class="kw">limit</span> <span class="dv">5</span><span class="st">')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<pre><code>┌──────────┬───────────────┬───────────────┐
+│ order_id │      GST      │      PST      │
+│ varchar  │ decimal(22,2) │ decimal(22,2) │
+├──────────┼───────────────┼───────────────┤
+│ B-26055  │        286.45 │        401.03 │
+│ B-26055  │         33.55 │         46.97 │
+│ B-26055  │         22.15 │         31.01 │
+│ B-26055  │          2.85 │          3.99 │
+│ B-26055  │         11.35 │         15.89 │
+└──────────┴───────────────┴───────────────┘</code></pre>
+</div>
+<p>:::</p>
+<section id="basic-comparison-operations" class="level2">
+<h2 class="anchored" data-anchor-id="basic-comparison-operations">Basic Comparison operations</h2>
+<p>From the business perspective, we want to knwo which store has the positive profit and how about this month sales increase, and the profit margin. Let’s start with the simple &gt; and &lt; to compare whether one value is greater or less than another. It’s time to introduce the WHERE clause to filter the results we want from the SQL statements. 1. SELECT: Specify what fields we want from the table 2. FROM: Specify what table(or tables) we want from 3. WHERE: Specify the criteria that records in those fields should meet, also can be defined as a filter 4. LIMIT: Specify how many records to return. 5. and in statement we can have ORDER BY, GROUP BY clause, we may introduced later.</p>
+<p>Let’s see the WHERE clause in action. For Example, we want to see how about the order amount greater than $1000 by writing the following statement with WHERE:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> order_id, amount </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> sales_df</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> amount <span class="op">&gt;</span> <span class="dv">1000</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="e58a7b7f-60e5-43b2-a950-be191fe28bb3" class="cell" data-execution_count="35">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>sql(<span class="st">'select order_id, amount from sales_df where amount &gt; 1000 limit 5'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="35">
+<pre><code>┌──────────┬────────┐
+│ order_id │ amount │
+│ varchar  │ int64  │
+├──────────┼────────┤
+│ B-26055  │   5729 │
+│ B-26055  │   1250 │
+│ B-26055  │   1218 │
+│ B-25993  │   4363 │
+│ B-25973  │   4141 │
+└──────────┴────────┘</code></pre>
+</div>
+</div>
+<p>The Where clause is essentially used as a filter and return the records where the operators evaluate to TRUE</p>
+<p>Compare operator not only the &gt; and &lt;, Here is the list of compare operators: |Operator | Description | |————|—————| |= | Equal to | |&gt;= | Greater than or equal to | |&lt;= | Less than or equal to | |&lt;&gt; | Not equal to |</p>
+<p>Most compare operator to check the numberic values, like is 10 less than 8, actually is False. = and &lt;&gt; can also be used to check the value of text values. For Example, we can filter the result with category = ‘Clothing’, any record that category equal to ‘Clothing’ will be returned.</p>
 </section>
 </section>
 
